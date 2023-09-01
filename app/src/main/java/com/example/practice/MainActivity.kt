@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlin.random.Random
 import com.bumptech.glide.Glide;
@@ -25,7 +26,8 @@ import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private val dataList = mutableListOf<MyItem>()
+    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,6 +160,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
+
+
         binding.recyclerView.adapter = MyAdapter(dataList)
 
         val adapter = MyAdapter(dataList)
@@ -167,8 +173,18 @@ class MainActivity : AppCompatActivity() {
         adapter.itemClick = object : MyAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra(Constants.ITEM_INDEX, position)
+                intent.putExtra(Constants.ITEM_OBJECT, dataList[position]);
                 activityResultLauncher.launch(intent)
 
+            }
+        }
+
+        adapter.itemLongClick = object : MyAdapter.ItemLongClick {
+            override fun onLongClick(view: View, position: Int) {
+                val ad = AlertDialog.Builder(this@MainActivity)
+                ad.setIcon(R.drawable.baseline_delete_24)
+                ad.setTitle("상품삭제")
             }
         }
 
