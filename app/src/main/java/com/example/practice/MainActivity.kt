@@ -322,7 +322,7 @@ class MainActivity : AppCompatActivity() {
             setSmallIcon(R.mipmap.ic_launcher)
             setWhen(System.currentTimeMillis())
             setContentTitle("알림")
-            setContentText("키워드에 설정한 알림이 도착했습니다!!")
+            setContentText("알람테스트")
         }
         manager.notify(11, builder.build())
     }
