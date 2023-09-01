@@ -1,6 +1,7 @@
 package com.example.practice
 
 import android.content.Intent
+import android.icu.text.DecimalFormat
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -12,7 +13,9 @@ import com.example.practice.databinding.ActivityDetailBinding
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
 
-    private var isLike = false
+    private val dec = DecimalFormat("#,###")
+
+//    private var isLike = false
 
     private val item: MyItem? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -42,7 +45,12 @@ class DetailActivity : AppCompatActivity() {
             )
         })
 
-        binding.txtDetailPrice.text
+        binding.txtDetailPrice.text = dec.format(item?.aPrice)
+        binding.txtDetailCenter1.text = item?.aSeller
+        binding.txtDetailCenter2.text = item?.aAddress
+        binding.txtDetailName.text = item?.aName
+        binding.txtDetailIntro.text = item?.aIntro
+//        binding.detailIconBottom
 
 
 

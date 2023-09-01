@@ -15,7 +15,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlin.random.Random
@@ -46,7 +48,8 @@ class MainActivity : AppCompatActivity() {
                 1000,
                 "서울 서대문구 창천동",
                 13,
-                25
+                25,
+                false
             )
         )
         dataList.add(
@@ -58,7 +61,8 @@ class MainActivity : AppCompatActivity() {
                 10000,
                 "인천 계양구 귤현동",
                 8,
-                28
+                28,
+                false
             )
         )
         dataList.add(
@@ -70,7 +74,8 @@ class MainActivity : AppCompatActivity() {
                 10000,
                 "수성구 범어동",
                 23,
-                5
+                5,
+                false
             )
         )
         dataList.add(
@@ -82,7 +87,8 @@ class MainActivity : AppCompatActivity() {
                 10000,
                 "해운대구 우제2동",
                 14,
-                17
+                17,
+                false
             )
         )
         dataList.add(
@@ -94,7 +100,8 @@ class MainActivity : AppCompatActivity() {
                 150000,
                 "연제구 연산제8동",
                 22,
-                9
+                9,
+                false
             )
         )
         dataList.add(
@@ -106,19 +113,21 @@ class MainActivity : AppCompatActivity() {
                 50000,
                 "수원시 영통구 원천동",
                 25,
-                16
+                16,
+                false
             )
         )
         dataList.add(
             MyItem(
                 R.drawable.sample7,
-                "울산 동해오션뷰 60평 복층 펜트하우스 1일 숙박권 펜션 힐링 숙소 별장",
-                "울산 동해바다뷰 60평 복층 펜트하우스 1일 숙박권\n(에어컨이 없기에 낮은 가격으로 변경했으며 8월 초 가장 더운날 다녀가신 분 경우 시원했다고 잘 지내다 가셨습니다)\n1. 인원: 6명 기준입니다. 1인 10,000원 추가요금\n2. 장소: 북구 블루마시티, 32-33층\n3. 취사도구, 침구류, 세면도구, 드라이기 2개, 선풍기 4대 구비\n4. 예약방법: 예약금 50,000원 하시면 저희는 명함을 드리며 입실 오전 잔금 입금하시면 저희는 동.호수를 알려드리며 고객님은 예약자분 신분증 앞면 주민번호 뒷자리 가리시거나 지우시고 문자로 보내주시면 저희는 카드키를 우편함에 놓아 둡니다.\n5. 33층 옥상 야외 테라스 있음, 가스버너 있음\n6. 고기 굽기 가능\n7. 입실 오후 3시, 오전 11시 퇴실, 정리, 정돈 , 밸브 잠금 부탁드립니다.\n8. 층간소음 주의 부탁드립니다.\n9. 방3개, 화장실3개, 비데 3개\n10. 저희 집안이 쓰는 별장입니다.",
+                "울산 동해오션뷰 60평 복층 펜트하우스 \n 1일 숙박권 펜션 힐링 숙소 별장",
+                "울산 동해바다뷰 60평 복층 펜트하우스 1일 숙박권\n(에어컨이 없기에 낮은 가격으로 변경했으며 8월 초 가장 \n "+"더운날 다녀가신 분 경우 시원했다고 잘 지내다 가셨습니다)\n1. 인원: 6명 기준입니다. 1인 10,000원 추가요금\n2. 장소: 북구 블루마시티, 32-33층\n3. 취사도구, 침구류, 세면도구, 드라이기 2개, 선풍기 4대 구비\n4. 예약방법: 예약금 50,000원 하시면 저희는 명함을 드리며 \n "+"입실 오전 잔금 입금하시면 저희는 동.호수를 알려드리며 \n"+"고객님은 예약자 신분증 앞면 주민번호 뒷자리 가리거나 지우고 \n"+"문자로 보내주시면 저희는 카드키를 우편함에 놓아 둡니다.\n5. 33층 옥상 야외 테라스 있음, 가스버너 있음\n6. 고기 굽기 가능\n7. 입실 오후 3시, 오전 11시 퇴실, 정리, 정돈 , 밸브 잠금 \n"+"부탁드립니다.\n8. 층간소음 주의 부탁드립니다.\n9. 방3개, 화장실3개, 비데 3개\n10. 저희 집안이 쓰는 별장입니다.",
                 "굿리치",
                 150000,
                 "남구 옥동",
                 142,
-                54
+                54,
+                false
             )
         )
         dataList.add(
@@ -130,7 +139,8 @@ class MainActivity : AppCompatActivity() {
                 180000,
                 "동래구 온천제2동",
                 31,
-                7
+                7,
+                false
             )
         )
         dataList.add(
@@ -142,19 +152,21 @@ class MainActivity : AppCompatActivity() {
                 30000,
                 "원주시 명륜2동",
                 7,
-                28
+                28,
+                false
             )
         )
         dataList.add(
             MyItem(
                 R.drawable.sample10,
                 "셀린느 버킷 가방",
-                "22년 신세계 대전 구매입니당\n  셀린느 버킷백\n구매해서 몇번사용했어요\n까짐 스크래치 없습니다.\n타지역에서 보내는거라 택배로 진행합니당!",
+                "22년 신세계 대전 구매입니당\n셀린느 버킷백\n구매해서 몇번사용했어요\n까짐 스크래치 없습니다.\n타지역에서 보내는거라 택배로 진행합니당!",
                 "똑태현",
                 190000,
                 "중구 동화동",
                 40,
-                6
+                6,
+                false
             )
         )
 
@@ -180,11 +192,37 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == RESULT_OK) {
+                val itemIndex = it.data?.getIntExtra("itemIndex",0) as Int
+                val isLike = it.data?.getBooleanExtra("isLike",false) as Boolean
+
+                if(isLike) {
+                    dataList[itemIndex].isLike = true
+                    dataList[itemIndex].aLike += 1
+                } else{
+                    dataList[itemIndex].isLike = false
+                    dataList[itemIndex].aLike -= 1
+                }
+
+                adapter.notifyItemChanged(itemIndex)
+            }
+        }
+
         adapter.itemLongClick = object : MyAdapter.ItemLongClick {
             override fun onLongClick(view: View, position: Int) {
                 val ad = AlertDialog.Builder(this@MainActivity)
                 ad.setIcon(R.drawable.baseline_delete_24)
                 ad.setTitle("상품삭제")
+                ad.setMessage("상품을 정말로 삭제하시겠습니까?")
+                ad.setPositiveButton("확인") { dialog, _ ->
+                    dataList.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                }
+                ad.setNegativeButton("취소") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                ad.show()
             }
         }
 
