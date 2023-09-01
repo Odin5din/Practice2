@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">5dp</dimen>
+    <dimen name="activity_vertical_margin">5dp</dimen>
+    <dimen name="list_item_text_size1">14dp</dimen>
+    <dimen name="list_item_text_size2">12dp</dimen>
+    <dimen name="list_item_text_size3">12dp</dimen>
+    <dimen name="list_item_text_size4">16dp</dimen>
+    <dimen name="list_item_text_size5">12dp</dimen>
+    <dimen name="list_item_text_size6">12dp</dimen>
+    <dimen name="list_item_text_size7">12dp</dimen>
+    <dimen name="list_item_padding">4dp</dimen>
+    <dimen name="icon_size">60dp</dimen>
+    <dimen name="icon_padding">8dp</dimen>
+</resources>
