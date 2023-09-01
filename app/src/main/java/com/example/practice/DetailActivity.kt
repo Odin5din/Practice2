@@ -9,13 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practice.databinding.ActivityDetailBinding
+import com.google.android.material.snackbar.Snackbar
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
 
     private val dec = DecimalFormat("#,###")
 
-//    private var isLike = false
+    private var isLike = false
 
     private val item: MyItem? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -50,7 +51,23 @@ class DetailActivity : AppCompatActivity() {
         binding.txtDetailCenter2.text = item?.aAddress
         binding.txtDetailName.text = item?.aName
         binding.txtDetailIntro.text = item?.aIntro
-//        binding.detailIconBottom
+        binding.imgBack.setOnClickListener{
+            back()
+        }
+
+        binding.detailIconBottom.setOnClickListener {
+            if (!isLike) {
+                binding.detailIconBottom.setImageResource(R.drawable.pullheart)
+
+                Snackbar.make(binding.constLayout, "관심 목록에 추가되었습니다.", Snackbar.LENGTH_SHORT).show()
+                isLike = true
+
+            } else {
+                binding.detailIconBottom.setImageResource(R.drawable.heart)
+                isLike = false
+            }
+        }
+    }
 
 
 
@@ -58,7 +75,17 @@ class DetailActivity : AppCompatActivity() {
 
 
 
+    fun back() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("itemIndex", itemPosition)
+            putExtra("isLike", isLike)
+        }
+        setResult(RESULT_OK, intent)
+        if (!isFinishing) finish()
+    }
 
-
+    override fun onBackPressed() {
+        back()
     }
 }
+

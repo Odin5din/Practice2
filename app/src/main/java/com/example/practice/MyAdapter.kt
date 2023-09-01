@@ -49,8 +49,12 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         holder.good.text = mItems[position].aLike.toString()
         holder.chat.text = mItems[position].aChat.toString()
 
-//        if(mItems[position].isLike)
-//            holder.
+
+
+        if(mItems[position].isLike)
+            holder.heart.setImageResource(R.drawable.baseline_favorite_24)
+        else
+            holder.heart.setImageResource(R.drawable.baseline_favorite_border_24)
     }
 
     override fun getItemId(position: Int): Long {
@@ -68,5 +72,6 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         val address = binding.textItem5
         val good = binding.textItem6
         val chat = binding.textItem7
+        var heart = binding.heart
     }
 }

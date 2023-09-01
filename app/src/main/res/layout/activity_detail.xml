@@ -18,19 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/constLayout"
+        tools:context=".DetailActivity">
 
 
         <ImageView
@@ -45,6 +35,7 @@
             android:id="@+id/img_detail_icon1"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:src="@drawable/pepe7"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +66,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:src="@drawable/baseline_device_thermostat_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_detail1" />
 
@@ -83,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="20dp"
-            android:text="임시로 써봤습니다"
+            android:text="99℃"
             app:layout_constraintEnd_toStartOf="@+id/img_detail_icon2"
             app:layout_constraintTop_toBottomOf="@+id/img_detail1" />
 
@@ -148,6 +140,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_detail_bottom"
         android:layout_width="match_parent"
@@ -155,8 +158,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+
         <ImageView
             android:id="@+id/detail_icon_bottom"
+            android:src="@drawable/heart"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"

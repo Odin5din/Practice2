@@ -1,12 +1,19 @@
 package com.example.practice
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.AbsListView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
@@ -19,12 +26,15 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlin.random.Random
 import com.bumptech.glide.Glide;
 import com.example.practice.databinding.ActivityDetailBinding
 import com.example.practice.databinding.ActivityMainBinding
 import java.text.DecimalFormat
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -36,7 +46,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         val dataList = mutableListOf<MyItem>()
         dataList.add(
@@ -170,24 +179,19 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-
-
-
-
-
-
-        binding.recyclerView.adapter = MyAdapter(dataList)
-
         val adapter = MyAdapter(dataList)
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter.itemClick = object : MyAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                val product: String = dataList[position].aName
                 intent.putExtra(Constants.ITEM_INDEX, position)
                 intent.putExtra(Constants.ITEM_OBJECT, dataList[position]);
                 activityResultLauncher.launch(intent)
+                Toast.makeText(this@MainActivity, " $product 선택!", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -198,16 +202,21 @@ class MainActivity : AppCompatActivity() {
                 val isLike = it.data?.getBooleanExtra("isLike",false) as Boolean
 
                 if(isLike) {
+
                     dataList[itemIndex].isLike = true
                     dataList[itemIndex].aLike += 1
-                } else{
-                    dataList[itemIndex].isLike = false
-                    dataList[itemIndex].aLike -= 1
+                } else {
+
+                    if (dataList[itemIndex].isLike) {
+                        dataList[itemIndex].isLike = false
+                        dataList[itemIndex].aLike -= 1
+                    }
                 }
 
                 adapter.notifyItemChanged(itemIndex)
             }
         }
+
 
         adapter.itemLongClick = object : MyAdapter.ItemLongClick {
             override fun onLongClick(view: View, position: Int) {
@@ -226,7 +235,96 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.imgNotice.setOnClickListener {
+            notification()
+        }
 
+
+        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 500 }
+        val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 500 }
+        var isTop = true
+
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!binding.recyclerView.canScrollVertically(-1)
+                    && newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
+                    binding.scrollUp.startAnimation(fadeOut)
+                    binding.scrollUp.visibility = View.GONE
+                    isTop = true
+                } else {
+                    if (isTop) {
+                        binding.scrollUp.visibility = View.VISIBLE
+                        binding.scrollUp.startAnimation(fadeIn)
+                        isTop = false
+                    }
+                }
+            }
+        })
+
+
+        binding.scrollUp.setOnClickListener {
+            binding.recyclerView.smoothScrollToPosition(0)
+        }
+
+
+    }
+    override fun onBackPressed() {
+        val ad = AlertDialog.Builder(this)
+        ad.setIcon(R.drawable.pepe9)
+        ad.setTitle("종료")
+        ad.setMessage("정말 종료하시겠습니까?")
+
+        ad.setPositiveButton("확인") { dialog, _ ->
+            finish()
+        }
+        ad.setNegativeButton("취소") { dialog, _ ->
+            dialog.dismiss()
+        }
+        ad.show()
+    }
+
+
+    fun notification() {
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val builder: NotificationCompat.Builder
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelID = "one-channel"
+            val channelName = "My Channel One"
+            val channel = NotificationChannel(
+                channelID,
+                channelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "My Channel One Description"
+                setShowBadge(true)
+                val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val audioAttributes = AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build()
+                setSound(uri, audioAttributes)
+                enableVibration(true)
+
+            }
+            manager.createNotificationChannel(channel)
+
+            builder = NotificationCompat.Builder(this, channelID)
+
+        } else {
+            builder = NotificationCompat.Builder(this)
+        }
+
+        builder.run {
+            setSmallIcon(R.mipmap.ic_launcher)
+            setWhen(System.currentTimeMillis())
+            setContentTitle("알림")
+            setContentText("키워드에 설정한 알림이 도착했습니다!!")
+        }
+        manager.notify(11, builder.build())
     }
 }
 

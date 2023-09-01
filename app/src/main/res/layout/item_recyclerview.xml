@@ -97,6 +97,7 @@
                 />
 
             <ImageView
+                android:id="@+id/heart"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/baseline_favorite_border_24"
